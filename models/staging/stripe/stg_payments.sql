@@ -6,4 +6,4 @@ select
     amount/100 as amount,
     created as created_date
 
-from `dbt-tutorial.stripe.payment` as payments
+from {{ source('stripe', 'payment') }} as payments
