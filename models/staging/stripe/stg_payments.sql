@@ -1,14 +1,15 @@
 {{
     config(
         materialized='incremental',
-        unique_key='id'
-    )
+        unique_key='payment_id'
+     )
 }}
 
 with source_payments as (
     select * from {{ source('stripe', 'payment') }}
-
+    {% if is_incremental() %}
     where _batched_at > (select max(_batched_at) from {{ this }})
+    {% endif %}
 
 )
 
